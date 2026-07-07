@@ -40,4 +40,50 @@ class Riesgo
 
         return $stmt->execute($datos);
     }
+
+        // Obtener un riesgo por ID
+    public function obtenerPorId($id)
+    {
+        $sql = "SELECT * FROM riesgos WHERE id_riesgo=:id";
+
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->bindParam(":id",$id);
+        $stmt->execute();
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+
+    // Actualizar riesgo
+    public function actualizar($datos)
+    {
+        $sql="UPDATE riesgos SET
+
+        id_activo=:id_activo,
+        amenaza=:amenaza,
+        vulnerabilidad=:vulnerabilidad,
+        probabilidad=:probabilidad,
+        impacto=:impacto,
+        nivel_riesgo=:nivel_riesgo,
+        clasificacion=:clasificacion
+
+        WHERE id_riesgo=:id";
+
+        $stmt=$this->conexion->prepare($sql);
+
+        return $stmt->execute($datos);
+    }
+
+
+    // Eliminar riesgo
+    public function eliminar($id)
+    {
+        $sql="DELETE FROM riesgos WHERE id_riesgo=:id";
+
+        $stmt=$this->conexion->prepare($sql);
+
+        $stmt->bindParam(":id",$id);
+
+        return $stmt->execute();
+    }
 }

@@ -1,100 +1,234 @@
 <?php
 
 require_once("../../config/session.php");
+require_once("../models/Dashboard.php");
 
-if(!isset($_SESSION["usuario"])){
+if (!isset($_SESSION["usuario"])) {
 
     header("Location: login.php");
     exit();
-
 }
+
+$dashboard = new Dashboard();
+
+$totalActivos = $dashboard->totalActivos();
+$totalRiesgos = $dashboard->totalRiesgos();
+$totalControles = $dashboard->totalControles();
+$totalResidual = $dashboard->totalResidual();
+
+$nivel = $dashboard->riesgosPorNivel();
+$activo = $dashboard->riesgosPorActivo();
 
 include("layouts/header.php");
 include("layouts/sidebar.php");
 
 ?>
 
-<h2 class="mb-4">
+<div class="container-fluid">
 
-Bienvenido,
-<b><?php echo $_SESSION["usuario"]; ?></b>
+    <h2 class="mb-4">
+        Bienvenido,
+        <strong><?= $_SESSION["usuario"] ?></strong>
+    </h2>
 
-</h2>
+    <!-- TARJETAS -->
 
-<div class="row">
+    <div class="row">
 
-<div class="col-md-3">
+        <div class="col-md-3 mb-3">
 
-<div class="card shadow stat-card">
+            <div class="card shadow stat-card text-center">
 
-<h2>0</h2>
+                <div class="card-body">
 
-<p>Total Activos</p>
+                    <h2><?= $totalActivos ?></h2>
+
+                    <p>Total Activos</p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-3 mb-3">
+
+            <div class="card shadow stat-card text-center">
+
+                <div class="card-body">
+
+                    <h2><?= $totalRiesgos ?></h2>
+
+                    <p>Total Riesgos</p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-3 mb-3">
+
+            <div class="card shadow stat-card text-center">
+
+                <div class="card-body">
+
+                    <h2><?= $totalControles ?></h2>
+
+                    <p>Tratamientos</p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-3 mb-3">
+
+            <div class="card shadow stat-card text-center">
+
+                <div class="card-body">
+
+                    <h2><?= $totalResidual ?></h2>
+
+                    <p>Riesgos Residuales</p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- GRÁFICOS -->
+
+    <div class="row mt-4">
+
+        <div class="col-lg-6">
+
+            <div class="card shadow">
+
+                <div class="card-header bg-primary text-white">
+
+                    Riesgos por Nivel
+
+                </div>
+
+                <div class="card-body">
+
+                    <canvas id="nivelChart"></canvas>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-6">
+
+            <div class="card shadow">
+
+                <div class="card-header bg-success text-white">
+
+                    Riesgos por Activo
+
+                </div>
+
+                <div class="card-body">
+
+                    <canvas id="activoChart"></canvas>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
 
 </div>
 
-</div>
+<script>
 
-<div class="col-md-3">
+// ---------- GRAFICO 1 ----------
 
-<div class="card shadow stat-card">
+const nivelChart = document.getElementById('nivelChart');
 
-<h2>0</h2>
+new Chart(nivelChart,{
 
-<p>Total Riesgos</p>
+    type:'bar',
 
-</div>
+    data:{
 
-</div>
+        labels:[
 
-<div class="col-md-3">
+            <?php
+            foreach($nivel as $n){
+                echo "'".$n["clasificacion"]."',";
+            }
+            ?>
 
-<div class="card shadow stat-card">
+        ],
 
-<h2>0</h2>
+        datasets:[{
 
-<p>Riesgos Altos</p>
+            label:'Cantidad de Riesgos',
 
-</div>
+            data:[
 
-</div>
+                <?php
+                foreach($nivel as $n){
+                    echo $n["total"].",";
+                }
+                ?>
 
-<div class="col-md-3">
+            ]
 
-<div class="card shadow stat-card">
+        }]
 
-<h2>0</h2>
+    }
 
-<p>Riesgos Críticos</p>
+});
 
-</div>
+// ---------- GRAFICO 2 ----------
 
-</div>
+const activoChart = document.getElementById('activoChart');
 
-</div>
+new Chart(activoChart,{
 
-<div class="card mt-5 shadow">
+    type:'pie',
 
-<div class="card-body">
+    data:{
 
-<h4>
+        labels:[
 
-Dashboard de Riesgos
+            <?php
+            foreach($activo as $a){
+                echo "'".$a["nombre"]."',";
+            }
+            ?>
 
-</h4>
+        ],
 
-<p>
+        datasets:[{
 
-Aquí mostraremos los gráficos con Chart.js.
+            data:[
 
-</p>
+                <?php
+                foreach($activo as $a){
+                    echo $a["total"].",";
+                }
+                ?>
 
-</div>
+            ]
 
-</div>
+        }]
 
-<?php
+    }
 
-include("layouts/footer.php");
+});
 
-?>
+</script>
+
+<?php include("layouts/footer.php"); ?>
