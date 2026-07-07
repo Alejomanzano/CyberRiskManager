@@ -39,28 +39,46 @@ class Activo
     }
 
     
+
+    // Eliminar un activo
+    public function eliminar($id)
+    {
+        $sql = "DELETE FROM activos WHERE id_activo = :id";
+
+        $stmt = $this->conexion->prepare($sql);
+
+        $stmt->bindParam(":id", $id);
+
+        return $stmt->execute();
+    }
+
+        // Obtener un activo por ID
     public function obtenerPorId($id)
     {
-        $sql = "SELECT * FROM activos WHERE id_activo = ?";
+        $sql = "SELECT * FROM activos WHERE id_activo = :id";
+
         $stmt = $this->conexion->prepare($sql);
-        $stmt->execute([$id]);
+        $stmt->bindParam(":id", $id);
+        $stmt->execute();
 
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-            
+    // Actualizar un activo
     public function actualizar($datos)
     {
         $sql = "UPDATE activos SET
-                nombre=:nombre,
-                tipo=:tipo,
-                propietario=:propietario,
-                descripcion=:descripcion,
-                confidencialidad=:confidencialidad,
-                integridad=:integridad,
-                disponibilidad=:disponibilidad,
-                valor_activo=:valor_activo
-                WHERE id_activo=:id_activo";
+
+        nombre=:nombre,
+        tipo=:tipo,
+        propietario=:propietario,
+        descripcion=:descripcion,
+        confidencialidad=:confidencialidad,
+        integridad=:integridad,
+        disponibilidad=:disponibilidad,
+        valor_activo=:valor_activo
+
+        WHERE id_activo=:id";
 
         $stmt = $this->conexion->prepare($sql);
 
@@ -68,13 +86,5 @@ class Activo
     }
 
     
-    public function eliminar($id)
-    {
-        $sql = "DELETE FROM activos WHERE id_activo = ?";
-
-        $stmt = $this->conexion->prepare($sql);
-
-        return $stmt->execute([$id]);
-    }
 
 }

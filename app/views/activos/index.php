@@ -39,6 +39,24 @@ Nuevo Activo
 
 <th>Valor</th>
 
+<th width="180">Acciones</th>
+
+</tr>
+
+</thead>
+
+<tr>
+
+<th>ID</th>
+
+<th>Nombre</th>
+
+<th>Tipo</th>
+
+<th>Propietario</th>
+
+<th>Valor</th>
+
 </tr>
 
 </thead>
@@ -59,6 +77,31 @@ Nuevo Activo
 
 <td><?= number_format($a["valor_activo"],2) ?></td>
 
+<td>
+
+<a
+href="editar.php?id=<?= $a["id_activo"] ?>"
+class="btn btn-warning btn-sm">
+
+<i class="bi bi-pencil-square"></i>
+
+Editar
+
+</a>
+
+<a
+href="../../controllers/ActivoController.php?eliminar=<?= $a["id_activo"] ?>"
+class="btn btn-danger btn-sm"
+onclick="return confirm('¿Eliminar este activo?')">
+
+<i class="bi bi-trash"></i>
+
+Eliminar
+
+</a>
+
+</td>
+
 </tr>
 
 <?php endforeach; ?>
@@ -68,3 +111,4 @@ Nuevo Activo
 </table>
 
 <?php include("../layouts/footer.php"); ?>
+
