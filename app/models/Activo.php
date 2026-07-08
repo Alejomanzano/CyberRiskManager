@@ -43,11 +43,59 @@ class Activo
     // Eliminar un activo
     public function eliminar($id)
     {
-        $sql = "DELETE FROM activos WHERE id_activo = :id";
+        // Buscar riesgos del activo
+        $sql = "SELECT id_riesgo FROM riesgos WHERE id_activo=:id";
 
         $stmt = $this->conexion->prepare($sql);
+        $stmt->bindParam(":id",$id);
+        $stmt->execute();
 
-        $stmt->bindParam(":id", $id);
+        $riesgos = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        foreach($riesgos as $r){
+
+            // Eliminar observaciones del riesgo
+            $sql = "DELETE FROM observaciones
+                    WHERE id_riesgo = :id_riesgo";
+
+            $stmt2 = $this->conexion->prepare($sql);
+            $stmt2->bindParam(":id_riesgo", $r["id_riesgo"]);
+            $stmt2->execute();
+
+            // Eliminar riesgos residuales
+            $sql = "DELETE rr
+                    FROM riesgos_residuales rr
+                    INNER JOIN controles c
+                    ON rr.id_control = c.id_control
+                    WHERE c.id_riesgo = :id_riesgo";
+
+            $stmt2 = $this->conexion->prepare($sql);
+            $stmt2->bindParam(":id_riesgo",$r["id_riesgo"]);
+            $stmt2->execute();
+
+            // Eliminar controles
+            $sql = "DELETE FROM controles
+                    WHERE id_riesgo=:id_riesgo";
+
+            $stmt2 = $this->conexion->prepare($sql);
+            $stmt2->bindParam(":id_riesgo",$r["id_riesgo"]);
+            $stmt2->execute();
+        }
+
+        // Eliminar riesgos
+        $sql = "DELETE FROM riesgos
+                WHERE id_activo=:id";
+
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->bindParam(":id",$id);
+        $stmt->execute();
+
+        // Finalmente eliminar el activo
+        $sql = "DELETE FROM activos
+                WHERE id_activo=:id";
+
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->bindParam(":id",$id);
 
         return $stmt->execute();
     }
