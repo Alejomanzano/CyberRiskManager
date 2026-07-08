@@ -11,6 +11,8 @@ include("../layouts/sidebar.php");
 
 ?>
 
+
+
 <div class="d-flex justify-content-between mb-4">
 
     <h2>Gestión de Riesgos</h2>
@@ -29,6 +31,7 @@ include("../layouts/sidebar.php");
 
     <th>ID</th>
     <th>Activo</th>
+    <th>Descripción del Riesgo</th>
     <th>Amenaza</th>
     <th>Vulnerabilidad</th>
     <th>Probabilidad</th>
@@ -50,6 +53,8 @@ include("../layouts/sidebar.php");
             <td><?= $r["id_riesgo"] ?></td>
 
             <td><?= $r["activo"] ?></td>
+
+            <td><?= $r["descripcion_riesgo"] ?></td>
 
             <td><?= $r["amenaza"] ?></td>
 

@@ -43,7 +43,7 @@ if(isset($_POST["actualizar"])){
     $datos=[
 
         "id"=>$_POST["id"],
-
+        "descripcion_riesgo"=>$_POST["descripcion_riesgo"],
         "id_activo"=>$_POST["id_activo"],
 
         "amenaza"=>$_POST["amenaza"],
@@ -94,6 +94,8 @@ if($_SERVER["REQUEST_METHOD"]=="POST" && !isset($_POST["actualizar"])){
     $datos=[
 
         "id_activo"=>$_POST["id_activo"],
+
+        "descripcion_riesgo"=>$_POST["descripcion_riesgo"],
 
         "amenaza"=>$_POST["amenaza"],
 

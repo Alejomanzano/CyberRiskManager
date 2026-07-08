@@ -135,14 +135,27 @@ include("../layouts/sidebar.php");
 
     <br>
 
-    <button
-    type="submit"
-    name="actualizar"
-    class="btn btn-success">
+    <div class="mb-3">
 
-        Actualizar Riesgo
+<label>Descripción del Riesgo</label>
 
-    </button>
+<textarea
+name="descripcion_riesgo"
+class="form-control"
+rows="3"><?= $riesgo["descripcion_riesgo"] ?></textarea>
+
+</div>
+
+<br>
+
+<button
+type="submit"
+name="actualizar"
+class="btn btn-success">
+
+Actualizar Riesgo
+
+</button>
 
     <a href="index.php"
        class="btn btn-secondary">
@@ -154,3 +167,4 @@ include("../layouts/sidebar.php");
 </form>
 
 <?php include("../layouts/footer.php"); ?>
+

@@ -12,6 +12,7 @@ class Riesgo
         $this->conexion = $db->conectar();
     }
 
+    // Obtener todos los riesgos
     public function obtenerTodos()
     {
         $sql = "SELECT r.*, a.nombre AS activo
@@ -26,22 +27,39 @@ class Riesgo
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    // Insertar riesgo
     public function insertar($datos)
     {
         $sql = "INSERT INTO riesgos
-        (id_activo,amenaza,vulnerabilidad,
-        probabilidad,impacto,nivel_riesgo,clasificacion)
+        (
+            id_activo,
+            descripcion_riesgo,
+            amenaza,
+            vulnerabilidad,
+            probabilidad,
+            impacto,
+            nivel_riesgo,
+            clasificacion
+        )
 
         VALUES
-        (:id_activo,:amenaza,:vulnerabilidad,
-        :probabilidad,:impacto,:nivel_riesgo,:clasificacion)";
+        (
+            :id_activo,
+            :descripcion_riesgo,
+            :amenaza,
+            :vulnerabilidad,
+            :probabilidad,
+            :impacto,
+            :nivel_riesgo,
+            :clasificacion
+        )";
 
         $stmt = $this->conexion->prepare($sql);
 
         return $stmt->execute($datos);
     }
 
-        // Obtener un riesgo por ID
+    // Obtener un riesgo por ID
     public function obtenerPorId($id)
     {
         $sql = "SELECT * FROM riesgos WHERE id_riesgo=:id";
@@ -53,13 +71,13 @@ class Riesgo
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-
     // Actualizar riesgo
     public function actualizar($datos)
     {
         $sql="UPDATE riesgos SET
 
         id_activo=:id_activo,
+        descripcion_riesgo=:descripcion_riesgo,
         amenaza=:amenaza,
         vulnerabilidad=:vulnerabilidad,
         probabilidad=:probabilidad,
@@ -73,7 +91,6 @@ class Riesgo
 
         return $stmt->execute($datos);
     }
-
 
     // Eliminar riesgo
     public function eliminar($id)

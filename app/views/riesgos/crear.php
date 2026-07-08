@@ -43,7 +43,21 @@ required>
 </select>
 
 </div>
+<div class="mb-3">
 
+<label class="form-label">
+
+Descripción del Riesgo
+
+</label>
+
+<textarea
+name="descripcion_riesgo"
+class="form-control"
+rows="3"
+required></textarea>
+
+</div>
 <div class="mb-3">
 
 <label>
@@ -152,3 +166,18 @@ Cancelar
 </form>
 
 <?php include("../layouts/footer.php"); ?>
+
+<div class="mb-3">
+
+<label class="form-label">
+
+Descripción del Riesgo
+
+</label>
+
+<textarea
+name="descripcion_riesgo"
+class="form-control"
+required></textarea>
+
+</div>
